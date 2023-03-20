@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Input from 'src/components/Input'
 // import { getRules } from 'src/utils/rules'
 import { schema, Schema } from 'src/utils/rules'
@@ -8,11 +8,17 @@ import { useMutation } from '@tanstack/react-query'
 import { registerAccount } from 'src/api/auth.api'
 import { omit } from 'lodash'
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
-import { ResponseApi } from 'src/types/utils.type'
+import { ErrorResponseApi } from 'src/types/utils.type'
+import { useContext } from 'react'
+import { AppContext } from 'src/contexts/app.context'
+import Button from 'src/components/Button'
 
 export type FormData = Schema
 
 export default function Register() {
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
+  const navigate = useNavigate()
+  
   const {
     register, // Cung cấp thông tin trường cho from
     handleSubmit,
@@ -38,11 +44,13 @@ export default function Register() {
       const body = omit(dataOnValid, ['confirm_password'])
       registerAccountMutation.mutate(body, {
         onSuccess: (data) => {
-          console.log(data)
+          setIsAuthenticated(true)
+          setProfile(data.data.data.user)
+          navigate('/')
         },
         onError: (error) => {
           // Kiểm tra nếu lỗi là 422 của Axios
-          if (isAxiosUnprocessableEntityError<ResponseApi<Omit<FormData, 'confirm_password'>>>(error)) {
+          if (isAxiosUnprocessableEntityError<ErrorResponseApi<Omit<FormData, 'confirm_password'>>>(error)) {
             const formError = error.response?.data.data
             if (formError) {
               Object.keys(formError).forEach((key) => {
@@ -112,9 +120,14 @@ export default function Register() {
               />
 
               <div className='mt-2'>
-                <button className='w-full bg-red-500 py-4 px-2 text-center text-sm text-white hover:bg-red-600'>
+                <Button
+                  type='submit'
+                  isLoading={registerAccountMutation.isLoading}
+                  disabled={registerAccountMutation.isLoading}
+                  className='w-full bg-red-500 py-4 px-2 text-center text-sm text-white hover:bg-red-600'
+                >
                   Đăng Ký
-                </button>
+                </Button>
               </div>
               <div className='item-center mt-8 flex justify-center text-center'>
                 <span className='text-slate-400'>Bạn đã có tài khoản?</span>
