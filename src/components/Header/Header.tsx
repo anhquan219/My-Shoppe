@@ -119,7 +119,7 @@ export function Header() {
               xmlnsXlink='http://www.w3.org/1999/xlink'
               aria-hidden='true'
               role='img'
-              className='iconify iconify--logos h-11'
+              className='iconify iconify--logos h-11 w-full'
               width='31.88'
               height={32}
               preserveAspectRatio='xMidYMid meet'
