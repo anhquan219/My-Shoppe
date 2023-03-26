@@ -13,12 +13,13 @@ import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
 
-export type FormData = Schema
+export type FormData = Pick<Schema, 'password' | 'email' | 'confirm_password'>
+const registerSchema = schema.pick(['email', 'password', 'confirm_password'])
 
 export default function Register() {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
-  
+
   const {
     register, // Cung cấp thông tin trường cho from
     handleSubmit,
@@ -27,7 +28,7 @@ export default function Register() {
     setError,
     formState: { errors }
   } = useForm<FormData>({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(registerSchema)
   })
 
   const registerAccountMutation = useMutation({

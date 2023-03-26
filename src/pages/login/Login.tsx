@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import authApi from 'src/api/auth.api'
-import { loginSchema, schemaLogin } from 'src/utils/rules'
+import { schema, Schema } from 'src/utils/rules'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ErrorResponseApi } from 'src/types/utils.type'
@@ -11,7 +11,8 @@ import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
 
-export type FormData = schemaLogin
+export type FormData = Pick<Schema, 'password' | 'email'>
+const loginSchema = schema.pick(['email', 'password'])
 
 export default function Login() {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
