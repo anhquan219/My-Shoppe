@@ -37,3 +37,20 @@ export function formatNumberToSocialStyle(value: number) {
 
 // Tính % sale
 export const rateSale = (original: number, sale: number) => Math.round(((original - sale) / original) * 100) + '%'
+
+// Xóa các kí tự đặc biệt trong chuỗi
+const removeSpecialCharacter = (str: string) =>
+  // eslint-disable-next-line no-useless-escape
+  str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, '')
+
+// Trả về URL chứa name product và id để gửi lên URL (thân thiện SEO)
+export const generateNameId = ({ name, id }: { name: string; id: string }) => {
+  // Chuyển tất cả các dâu ' ' thành '-' và cộng thêm '-i-' + id
+  return removeSpecialCharacter(name).replace(/\s/g, '-') + `-i-${id}`
+}
+
+// Tách id ra từ chuỗi nhận được từ URL
+export const getIdFromNameId = (nameId: string) => {
+  const arr = nameId.split('-i-') // Biến chuỗi thành 1 array phân tách bởi '-i-'
+  return arr[arr.length - 1]
+}

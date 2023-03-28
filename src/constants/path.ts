@@ -4,7 +4,7 @@ const path = {
   register: '/register',
   login: '/login',
   logout: '/logout',
-  productDetail: ':id' // Sử dụng ':' cho các URL động
+  productDetail: ':nameId' // Sử dụng ':' cho các URL động
 } as const
 
 export default path

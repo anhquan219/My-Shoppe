@@ -6,12 +6,13 @@ import productApi from 'src/api/product.api'
 import InputNumber from 'src/components/InputNumber'
 import ProductRating from 'src/components/ProductRating'
 import { Product } from 'src/types/product.type'
-import { formatCurrency, formatNumberToSocialStyle, rateSale } from 'src/utils/utils'
+import { formatCurrency, formatNumberToSocialStyle, rateSale, getIdFromNameId } from 'src/utils/utils'
 
 export default function ProductDetail() {
   const [currentIndexImages, setCurrentIndexImages] = useState([0, 5])
   const [activeImage, setActiveImage] = useState('')
-  const { id } = useParams() // Lấy id từ URL (config ':id')
+  const { nameId } = useParams() // Lấy nameId từ URL (config ':nameId')
+  const id = getIdFromNameId(nameId as string)
 
   const { data: productDetailData } = useQuery({
     queryKey: ['product', id],
