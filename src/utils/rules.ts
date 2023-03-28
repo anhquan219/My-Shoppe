@@ -93,7 +93,8 @@ export const schema = yup.object({
     name: 'price-not-allowed',
     message: 'Giá không phù hợp',
     test: testPriceMinMax
-  })
+  }),
+  search: yup.string().trim().required('Tên sản phẩm là bắt buộc')
 })
 
 // Xuất type form từ schema
