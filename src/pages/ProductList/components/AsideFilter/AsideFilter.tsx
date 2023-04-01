@@ -155,6 +155,19 @@ export default function AsideFilter({ categories, queryConfig }: Props) {
               }}
             />
             <div className='mx-2 mt-2'>-</div>
+            {/* <InputV2
+              control={control}
+              name='price_min'
+              type='number'
+              className='grow'
+              placeholder='₫ TỪ'
+              classNameInput='p-1 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
+              classNameError='hidden'
+              onChange={() => {
+                trigger('price_max')
+              }}
+            /> */}
+
             <Controller
               control={control}
               name='price_max'
