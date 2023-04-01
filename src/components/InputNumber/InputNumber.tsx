@@ -1,4 +1,4 @@
-import { forwardRef, InputHTMLAttributes } from 'react'
+import { forwardRef, InputHTMLAttributes, useState } from 'react'
 
 export interface InputNumberProps extends InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string
@@ -13,15 +13,21 @@ const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function Inpu
     classNameInput = 'p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm',
     classNameError = 'mt-1 text-red-600 min-h-[1.25rem] text-sm',
     onChange,
+    value = '',
     ...rest
   },
   ref
 ) {
+  const [localValue, setLocalValue] = useState<string>(value as string)
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
-    // Kiểm tra khi ng dùng gõ số hoặc rỗng và có truyền onChange thì ms chạy onChange
-    if ((/^\d+$/.test(value) || value === '') && onChange) {
-      onChange(e)
+    // Kiểm tra khi ng dùng gõ số hoặc rỗng
+    if (/^\d+$/.test(value) || value === '') {
+      // Vẫn truyền data nhập vào ô input dù k truyền onChange
+      setLocalValue(value)
+      // Khi truyền onChange thì mới emit data e ra ngoài
+      onChange && onChange(e)
     }
   }
 
@@ -31,7 +37,7 @@ const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function Inpu
 
   return (
     <div className={className}>
-      <input className={classNameInput} onChange={handleChange} {...rest} ref={ref} />
+      <input className={classNameInput} onChange={handleChange} value={value || localValue} {...rest} ref={ref} />
       <div className={classNameError}>{errorMessage}</div>
     </div>
   )
