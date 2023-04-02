@@ -38,17 +38,6 @@ Chạy câu lệnh dưới đây:
 ```bash
 yarn add eslint prettier @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-config-prettier eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react eslint-plugin-prettier prettier-plugin-tailwindcss eslint-plugin-react-hooks -D
 ```
-
-```ts
-// Currying function
-// Truyền data vào hàm xử lý đã trả sẵn event mà không cần truyền lại event
-const handleChange = (data: any) => (event: React.ChangeEvent<HTMLInputElement>) => {
-  console.log(data, event)
-}
-
-<input onChange={handleChange(data)}>
-```
-
 ### Cấu hình ESLint
 
 Tạo file `.eslintrc.cjs` tại thư mục root
