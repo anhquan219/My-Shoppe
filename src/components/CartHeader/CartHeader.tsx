@@ -8,12 +8,12 @@ export function CartHeader() {
 
   return (
     <div className='border-b border-b-black/10'>
-      <div className='bg-orange-600 text-white'>
+      <div className='bg-[linear-gradient(-180deg,#f53d2d,#f63);] py-2 text-white'>
         <div className='container'>
           <NavHeader />
         </div>
       </div>
-      <div className='bg-white py-6'>
+      <div className='bg-white pb-5 pt-3'>
         <div className='container'>
           <nav className='md:flex md:items-center md:justify-between'>
             <Link to={path.home} className='flex flex-shrink-0 items-center'>
