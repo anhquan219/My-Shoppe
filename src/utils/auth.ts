@@ -1,14 +1,18 @@
 import { User } from 'src/types/user.type'
 
+export const LocalStorageEventTarget = new EventTarget() // Tạo đối tượng EventTarget để emit sự kiện
+
 // Set khi đăng nhập thành công
 export const setAcessTokenToLS = (access_token: string) => {
   localStorage.setItem('access_tocken', access_token)
 }
 
-// Clear khi đăng xuất
+// Clear khi đăng xuất (Khi Logout hoặc hết hạn đăng nhập sẽ được gọi)
 export const clearLS = () => {
   localStorage.removeItem('access_tocken')
   localStorage.removeItem('profile')
+  const clearLSEvent = new Event('clearLS') // Tạo đối tượng Event để tương tác với đối tượng EventTarget tạo ở trên
+  LocalStorageEventTarget.dispatchEvent(clearLSEvent) // Emit sự kiện vừa tạo
 }
 
 // Get data vào Context

@@ -57,6 +57,10 @@ class Http {
           const message = data?.message || error.message
           toast.error(message)
         }
+        // Hết hạn đăng nhập
+        if (error.response?.status === HttpStatusCode.Unauthorized) {
+          clearLS()
+        }
         return Promise.reject(error)
       }
     )
