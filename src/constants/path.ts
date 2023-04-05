@@ -3,7 +3,7 @@ const path = {
   user: '/user',
   profile: '/user/profile',
   changePassword: '/user/password',
-  hitoryPurchase: '/user/purchase',
+  historyPurchase: '/user/purchase',
   register: '/register',
   login: '/login',
   logout: '/logout',
