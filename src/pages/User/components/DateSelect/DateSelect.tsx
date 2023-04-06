@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { range } from 'lodash'
+import { log } from 'console'
 
 interface Props {
   onChange?: (value: Date) => void
@@ -9,16 +10,26 @@ interface Props {
 
 export function DateSelect({ value, onChange, errorMessage }: Props) {
   const [date, setDate] = useState({
-    date: value?.getDate() || 1,
-    month: value?.getMonth() || 0,
-    year: value?.getFullYear() || 1990
+    date: 1,
+    month: 0,
+    year: 1990
   })
 
+  useEffect(() => {
+    if (value) {
+      setDate({
+        date: value.getDate(),
+        month: value.getMonth(),
+        year: value.getFullYear()
+      })
+    }
+  }, [value])
+
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value, name } = event.target
+    const { value: valueFromSelect, name } = event.target
     const newData = {
       ...date,
-      [name]: value
+      [name]: Number(valueFromSelect)
     }
     setDate(newData)
     onChange && onChange(new Date(newData.year, newData.month, newData.date))
@@ -31,7 +42,7 @@ export function DateSelect({ value, onChange, errorMessage }: Props) {
         <div className='flex justify-between'>
           <select
             className='h-10 w-[32%] rounded-sm border border-black/10 px-3'
-            value={value?.getDate() || date.date}
+            value={date.date}
             name='date'
             onChange={handleChange}
           >
@@ -44,8 +55,8 @@ export function DateSelect({ value, onChange, errorMessage }: Props) {
           </select>
           <select
             className='h-10 w-[32%] rounded-sm border border-black/10 px-3'
-            value={value?.getMonth() || date.month}
-            name='date'
+            value={date.month}
+            name='month'
             onChange={handleChange}
           >
             <option disabled>Tháng</option>
@@ -57,8 +68,8 @@ export function DateSelect({ value, onChange, errorMessage }: Props) {
           </select>
           <select
             className='h-10 w-[32%] rounded-sm border border-black/10 px-3'
-            value={value?.getFullYear() || date.year}
-            name='date'
+            value={date.year}
+            name='year'
             onChange={handleChange}
           >
             <option disabled>Năm</option>

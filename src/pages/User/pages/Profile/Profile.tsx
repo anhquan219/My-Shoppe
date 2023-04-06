@@ -5,16 +5,20 @@ import userApi from 'src/api/user.api'
 import { Controller, useForm } from 'react-hook-form'
 import { UserSchema, userSchema } from 'src/utils/rules'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import InputNumber from 'src/components/InputNumber'
 import Button from 'src/components/Button'
+import { setProfileFromLS } from 'src/utils/auth'
+import { toast } from 'react-toastify'
+import { AppContext } from 'src/contexts/app.context'
 
 type FormData = Pick<UserSchema, 'name' | 'phone' | 'address' | 'avatar' | 'date_of_birth'>
 
 const profileSchema = userSchema.pick(['name', 'address', 'phone', 'date_of_birth', 'avatar'])
 
 export function Profile() {
-  const { data: profileData } = useQuery({
+  const { setProfile } = useContext(AppContext)
+  const { data: profileData, refetch } = useQuery({
     queryKey: ['profile'],
     queryFn: userApi.getProfile
   })
@@ -42,15 +46,21 @@ export function Profile() {
   })
 
   useEffect(() => {
-    setValue('name', profile?.name)
-    setValue('phone', profile?.phone)
-    setValue('address', profile?.address)
-    setValue('avatar', profile?.avatar)
-    setValue('date_of_birth', profile?.date_of_birth ? new Date(profile.date_of_birth) : new Date(1990, 0, 1))
-  })
+    if (profile) {
+      setValue('name', profile.name)
+      setValue('phone', profile.phone)
+      setValue('address', profile.address)
+      setValue('avatar', profile.avatar)
+      setValue('date_of_birth', profile.date_of_birth ? new Date(profile.date_of_birth) : new Date(1990, 0, 1))
+    }
+  }, [profile, setValue])
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data)
+  const onSubmit = handleSubmit(async (data) => {
+    const res = await updateProfileMutation.mutateAsync({ ...data, date_of_birth: data.date_of_birth?.toISOString() })
+    setProfileFromLS(res.data.data)
+    setProfile(res.data.data)
+    refetch()
+    toast.success(res.data.message)
   })
 
   return (
@@ -120,7 +130,7 @@ export function Profile() {
             <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'></div>
             <div className='sm:w-[80%] sm:pl-5'>
               <Button
-                className='flex h-9 items-center bg-orange-600 px-5 text-center text-sm text-white hover:bg-orange-600/80'
+                className='flex h-9 items-center rounded-sm bg-orange-600 px-5 text-center text-sm text-white hover:bg-orange-600/80'
                 type='submit'
               >
                 Lưu
