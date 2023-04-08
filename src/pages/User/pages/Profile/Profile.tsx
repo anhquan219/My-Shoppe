@@ -13,6 +13,7 @@ import { toast } from 'react-toastify'
 import { AppContext } from 'src/contexts/app.context'
 import { getAvatarUrl, isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ErrorResponseApi } from 'src/types/utils.type'
+import config from 'src/constants/config'
 
 type FormData = Pick<UserSchema, 'name' | 'phone' | 'address' | 'avatar' | 'date_of_birth'>
 
@@ -107,7 +108,13 @@ export function Profile() {
 
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileFromLocal = event.target.files?.[0]
-    setFile(fileFromLocal)
+    if (fileFromLocal && (fileFromLocal.size >= config.maxSizeUploadAvatar || !fileFromLocal.type.includes('image'))) {
+      toast.error(`Dụng lượng file tối đa 1 MB. Định dạng:.JPEG, .PNG`, {
+        position: 'top-center'
+      })
+    } else {
+      setFile(fileFromLocal)
+    }
   }
 
   const handleUpload = () => {
@@ -198,7 +205,15 @@ export function Profile() {
                 className='h-full w-full rounded-full object-cover'
               />
             </div>
-            <input ref={fileInputRef} className='hidden' type='file' accept='.jpg,.jpeg,.png' onChange={onFileChange} />
+            <input
+              ref={fileInputRef}
+              className='hidden'
+              type='file'
+              accept='.jpg,.jpeg,.png'
+              onChange={onFileChange}
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              onClick={(e) => ((e.target as any).value = null)} // Clear value cũ đi để khi chọn bức ảnh 2 lần đều được validate
+            />
             <button
               className='flex h-10 items-center justify-end rounded-sm border bg-white px-6 text-sm text-gray-600 shadow-sm'
               type='button'
