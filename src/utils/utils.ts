@@ -1,5 +1,7 @@
 import axios, { AxiosError } from 'axios'
+import config from 'src/constants/config'
 import HttpStatusCode from 'src/constants/httpStatusCode.enum'
+import userImage from 'src/assets/images/user.svg'
 
 // <T> : Generic type (Cho phép truyền type vào component)
 // Từ đó ta có thể truyền type vào giá trị trả về từ lúc gọi Func
@@ -54,3 +56,5 @@ export const getIdFromNameId = (nameId: string) => {
   const arr = nameId.split('-i-') // Biến chuỗi thành 1 array phân tách bởi '-i-'
   return arr[arr.length - 1]
 }
+
+export const getAvatarUrl = (avatarName?: string) => (avatarName ? `${config.baseUrl}images/${avatarName}` : userImage)
