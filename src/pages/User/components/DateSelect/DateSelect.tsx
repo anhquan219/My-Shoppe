@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-import { range } from 'lodash'
-import { log } from 'console'
+import range from 'lodash/range'
 
 interface Props {
   onChange?: (value: Date) => void
