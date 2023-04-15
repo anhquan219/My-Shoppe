@@ -93,6 +93,7 @@ export default function Register() {
                 type='email'
                 placeholder='Email'
                 register={register}
+                classNameEye='absolute right-[8px] h-5 w-5 cursor-pointer top-[12px]'
                 // rules={rules.email}
                 errorMessage={errors.email?.message}
               />
@@ -104,6 +105,7 @@ export default function Register() {
                 autoComplete='on'
                 placeholder='Password'
                 register={register}
+                classNameEye='absolute right-[8px] h-5 w-5 cursor-pointer top-[12px]'
                 // rules={rules.password}
                 errorMessage={errors.password?.message}
               />

@@ -82,6 +82,7 @@ export default function Login() {
                 autoComplete='on'
                 placeholder='Password'
                 register={register}
+                classNameEye='absolute right-[8px] h-5 w-5 cursor-pointer top-[12px]'
                 // rules={rules.password}
                 errorMessage={errors.password?.message}
               />
