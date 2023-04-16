@@ -12,12 +12,14 @@ import { Product as ProductType, ProductListConfig } from 'src/types/product.typ
 import { formatCurrency, formatNumberToSocialStyle, rateSale, getIdFromNameId } from 'src/utils/utils'
 import Product from '../ProductList/components/Product'
 import path from 'src/constants/path'
+import { useTranslation } from 'react-i18next'
 
 export default function ProductDetail() {
   const [currentIndexImages, setCurrentIndexImages] = useState([0, 5])
   const [activeImage, setActiveImage] = useState('')
   const { nameId } = useParams() // Lấy nameId từ URL (config ':nameId')
   const id = getIdFromNameId(nameId as string)
+  const { t } = useTranslation(['product'])
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
@@ -220,7 +222,9 @@ export default function ProductDetail() {
                   value={buyCount}
                   max={product.quantity}
                 />
-                <div className='ml-6 text-sm text-gray-500'>{product.quantity} sản phẩm có sẵn</div>
+                <div className='ml-6 text-sm text-gray-500'>
+                  {product.quantity} {t('product:available')}
+                </div>
               </div>
               <div className='mt-8 flex items-center'>
                 <button

@@ -11,6 +11,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { NoUndefinedField } from 'src/types/utils.type'
 import RatingStars from '../RatingStars'
 import omit from 'lodash/omit'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   categories: Category[]
@@ -22,6 +23,7 @@ const priceSchema = schema.pick(['price_min', 'price_max'])
 
 export default function AsideFilter({ categories, queryConfig }: Props) {
   const { category } = queryConfig
+  const { t } = useTranslation(['home'])
   const navigate = useNavigate()
   const {
     control, // truyền control khi k thể sử dụng register
@@ -76,7 +78,7 @@ export default function AsideFilter({ categories, queryConfig }: Props) {
             </g>
           </g>
         </svg>
-        Tất cả danh mục
+        {t('home:aside filter.all categories')}
       </Link>
       <div className='my-4 h-[1px] bg-gray-300' />
       <ul>
@@ -125,7 +127,7 @@ export default function AsideFilter({ categories, queryConfig }: Props) {
             />
           </g>
         </svg>
-        Bộ lọc tìm kiếm
+        {t('home:aside filter.filter search')}
       </Link>
       <div className='my-4 h-[1px] bg-gray-300' />
       <div className='my-5'>
