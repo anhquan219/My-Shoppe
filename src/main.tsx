@@ -8,6 +8,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { AppProvider } from './contexts/app.context'
 import ErrorBoundary from './components/ErrorBoundary'
 import 'src/i18n/i18n' // Cần import vào file app lớn nhất để sử dụng được i18n
+import { HelmetProvider } from 'react-helmet-async' // Hỗ trợ viết thẻ meta (SEO) cho từng page
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,14 +22,16 @@ const queryClient = new QueryClient({
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <AppProvider>
-          <ErrorBoundary>
-            <App />
-          </ErrorBoundary>
-        </AppProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
+      <HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          <AppProvider>
+            <ErrorBoundary>
+              <App />
+            </ErrorBoundary>
+          </AppProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </HelmetProvider>
     </BrowserRouter>
   </React.StrictMode>
 )

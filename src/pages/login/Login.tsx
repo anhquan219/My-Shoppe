@@ -10,6 +10,7 @@ import Input from 'src/components/Input'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
+import { Helmet } from 'react-helmet-async'
 
 export type FormData = Pick<Schema, 'password' | 'email'>
 const loginSchema = schema.pick(['email', 'password'])
@@ -58,6 +59,10 @@ export default function Login() {
   return (
     <div className='bg-orange-500'>
       <div className='container'>
+        <Helmet>
+          <title>Đăng nhập | Shopee Clone</title>
+          <meta name='description' content='Đăng nhập vào dự án Shopee Clone' />
+        </Helmet>
         {/* Desktop chia 5 cột, mobile chia 1 cột */}
         <div className='grid grid-cols-1 py-12 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           {/* Đặt thẻ này bắt đầu tại cột 4 (chiều rộng có thể chiếm là cột 4 và 5, vì thế nếu col-span-3 thì cũng chỉ là 2 cột)  */}
