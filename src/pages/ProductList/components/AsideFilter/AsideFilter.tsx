@@ -78,7 +78,7 @@ export default function AsideFilter({ categories, queryConfig }: Props) {
             </g>
           </g>
         </svg>
-        {t('home:aside filter.all categories')}
+        {t('aside filter.all categories')}
       </Link>
       <div className='my-4 h-[1px] bg-gray-300' />
       <ul>
@@ -127,7 +127,7 @@ export default function AsideFilter({ categories, queryConfig }: Props) {
             />
           </g>
         </svg>
-        {t('home:aside filter.filter search')}
+        {t('aside filter.filter search')}
       </Link>
       <div className='my-4 h-[1px] bg-gray-300' />
       <div className='my-5'>
