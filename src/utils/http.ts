@@ -15,7 +15,7 @@ import { URL_LOGIN, URL_LOGOUT, URL_REFRESH_TOKEN, URL_REGISTER } from 'src/api/
 import { isAxiosExpiredTokenError, isAxiosUnauthorizedError } from './utils'
 import { ErrorResponseApi } from 'src/types/utils.type'
 
-class Http {
+export class Http {
   instance: AxiosInstance
   // Sử dụng để lưu accessToken vào RAM tăng tốc độ khi không phải gọi localSotre liên tục
   private accessToken: string
@@ -127,6 +127,7 @@ class Http {
   }
 
   private handleRefreshToken() {
+    console.log('OK ----------------------')
     return this.instance
       .post<RefreshTokenReponse>(URL_REFRESH_TOKEN, {
         refresh_token: this.refreshToken
