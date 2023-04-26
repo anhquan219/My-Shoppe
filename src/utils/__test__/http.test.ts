@@ -46,7 +46,7 @@ describe('Test Http axios', () => {
     // Vì khi gọi 1 API thì http sẽ chạy vào "this.instance.interceptors.request" trong file "http.ts"
     // Trong này gọi đến "this.accessToken", mà "this.accessToken" gán bằng getAccessTokenFromLS()
     // Lúc này nếu dùng http khởi tạo trong "beforeEach()" trên thì "getAccessTokenFromLS()" không có giá trị vì xuống dưới ta mới "setAcessTokenToLS()"
-    // Nên ta "setAcessTokenToLS(access_token_1s)" trước sau đó mới khởi tạo new "Http.instance"
+    // Nên ta "setAcessTokenToLS(access_token_1s)" trước sau đó mới khởi tạo new "555"
     const httpNew = new Http().instance
 
     const res = await httpNew.get('me')
