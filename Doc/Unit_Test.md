@@ -46,3 +46,22 @@ describe('Test Refresh Tocken', () => {
   })
 })
 ```
+
+# Test các thư viện (library):
+
+- Để test các thư viện ví dụ như react-router-dom cần cài thêm các thư viện sau
+
+```ts
+  @testing-library/jest-dom
+  @testing-library/react
+  @testing-library/user-event
+```
+
+- Khi render component sử dụng useRouter() cần lưu ý nó phải được bọc bởi <Router>
+
+- Để tương tác được với HTML sử dụng:
+```ts
+  const user = userEvent.setup()
+
+  await user.click(screen.getByText(/Đăng nhập/i)) // regex thỏa mã cả chữ hoa chữ thường
+```
