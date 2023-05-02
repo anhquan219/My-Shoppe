@@ -5,7 +5,8 @@ import matchers from '@testing-library/jest-dom/matchers'
 import App from './App'
 import { BrowserRouter, MemoryRouter } from 'react-router-dom'
 import { log } from 'console'
-import { logScreen } from './utils/testUtils'
+import { logScreen, renderWithRouter } from './utils/testUtils'
+import path from './constants/path'
 
 expect.extend(matchers)
 
@@ -57,6 +58,27 @@ describe('App', () => {
 
     await waitFor(() => {
       expect(screen.queryByText(/Page Not Found/i)).toBeInTheDocument()
+    })
+
+    await logScreen()
+  })
+
+  it('Render register page', async () => {
+    // Cách 1 (Sử dụng window.history):
+    // window.history.pushState({}, 'Test', path.register)
+    // render(<App />, { wrapper: BrowserRouter })
+
+    renderWithRouter({ router: path.register })
+
+    // Cách 2 (Sử dụng <MemoryRouter>):
+    // render(
+    //   <MemoryRouter initialEntries={[path.register]}>
+    //     <App />
+    //   </MemoryRouter>
+    // )
+
+    await waitFor(() => {
+      expect(screen.queryByText(/Bạn đã có tài khoản?/i)).toBeInTheDocument()
     })
 
     await logScreen()

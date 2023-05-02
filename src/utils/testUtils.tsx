@@ -1,4 +1,7 @@
-import { screen, waitFor, waitForOptions } from '@testing-library/react'
+import { render, screen, waitFor, waitForOptions } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { BrowserRouter } from 'react-router-dom'
+import App from 'src/App'
 import { expect } from 'vitest'
 
 const delay = (time: number) =>
@@ -33,3 +36,12 @@ export const logScreen = async (
 // (mụa đích cho waitFor run lại vài lần trong thời gian mình cài để lấy được HTML sau đó mới pass expect)
 // Hàm delay sẽ đợi 1 khoảng thời gian là "time" sau đó trả về giá trị true
 // Sau khoảng thời gian đó thì expect sẽ pass vì toBe(true)
+
+export const renderWithRouter = ({ router = '/' } = {}) => {
+  window.history.pushState({}, 'Test', router)
+
+  return {
+    user: userEvent.setup(),
+    ...render(<App />, { wrapper: BrowserRouter })
+  }
+}
