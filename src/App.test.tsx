@@ -3,7 +3,9 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import matchers from '@testing-library/jest-dom/matchers'
 import App from './App'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, MemoryRouter } from 'react-router-dom'
+import { log } from 'console'
+import { logScreen } from './utils/testUtils'
 
 expect.extend(matchers)
 
@@ -43,5 +45,20 @@ describe('App', () => {
     // log ra HTML
     // tham số muốn in ra (toàn bộ HTML) và số dòng (99999999 dòng)
     screen.debug(document.body.parentElement as HTMLElement, 99999999)
+  })
+
+  it('Test chuyển đến trang not found', async () => {
+    const badRouter = '/some/bad/route'
+    render(
+      <MemoryRouter initialEntries={[badRouter]}>
+        <App />
+      </MemoryRouter>
+    )
+
+    await waitFor(() => {
+      expect(screen.queryByText(/Page Not Found/i)).toBeInTheDocument()
+    })
+
+    await logScreen()
   })
 })
