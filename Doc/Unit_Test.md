@@ -81,7 +81,32 @@ render(
 # Hàm hay sử dụng tìm kiếm text, element trong HTML:
 
 ```js
-  -document.querySelector('title').textContent - // Lấy nội dung trong 1 thẻ (thẻ title)
+-document.querySelector('title').textContent - // Lấy nội dung trong 1 thẻ (thẻ title)
   -screen.queryByText(/Page Not Found/i) - // Tìm kiếm đoạn text có tồn tại trong HTML hay không
   -screen.getByText(/Đăng nhập/i) // Trả về Element chứa text đó để tương tác (onClick)
 ```
+
+# Sử dụng MOCK server để test chứ k sử dụng API thật (để xuất sử dụng msw)
+
+- Khi tạo file `vitest.setup.js` nhớ bỏ nó vào trong `vite.config.ts`
+
+```js
+test: {
+    // Set môi trường test là jsdom để có thể sử dụng localStorage
+    environment: 'jsdom', // Mặc định là môi trường "node"
+    setupFiles: path.resolve(__dirname, './vitest.setup.js')  //  <---- Vị trí cần thêm
+  },
+```
+
+- Khi setup Mock Api trong file `vitest.setup.js` cần set `onUnhandledRequest: 'error'` để tránh các TH call các API ta chưa Mock sẽ tự nhẩy sang call API thật
+
+```js
+// Start server before all tests
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
+```
+
+# Lưu ý
+
+- Những trường hợp chứng minh rằng tìm không ra text hay là element
+  Thì nên dùng query hơn là find hay get (find và get là promise khi k tìm đc giá trị sẽ throw ra lỗi khiến unit test bị dừng)
+- Khi sử dụng query cần sử dụng thêm await waitFor()

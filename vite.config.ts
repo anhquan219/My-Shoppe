@@ -9,7 +9,8 @@ export default defineConfig({
   plugins: [react(), visualizer()] as any, //visualizer: phân tích cấu trúc file build
   test: {
     // Set môi trường test là jsdom để có thể sử dụng localStorage
-    environment: 'jsdom' // Mặc định là môi trường "node"
+    environment: 'jsdom', // Mặc định là môi trường "node"
+    setupFiles: path.resolve(__dirname, './vitest.setup.js') // Thêm file setup với đường dẫn ...
   },
   server: {
     port: 3000

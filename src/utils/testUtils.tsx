@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor, waitForOptions } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { BrowserRouter } from 'react-router-dom'
@@ -37,11 +38,46 @@ export const logScreen = async (
 // Hàm delay sẽ đợi 1 khoảng thời gian là "time" sau đó trả về giá trị true
 // Sau khoảng thời gian đó thì expect sẽ pass vì toBe(true)
 
+const createWrapper = () => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false // Khi call API thất bại thì k gọi lại nữa trong môi trường Test
+      },
+      mutations: {
+        retry: false // Khi call API thất bại thì k gọi lại nữa trong môi trường Test
+      }
+    },
+    // Tương tự không log ra bất kì thứ gì khi call không được API trong Mock
+    logger: {
+      log: console.log,
+      warn: console.warn,
+      // no more errors on the console
+      error: () => null
+    }
+  })
+
+  const Provider = ({ children }: { children: React.ReactNode }) => (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  )
+
+  return Provider
+}
+
+const Provider = createWrapper()
+
+// Vì ta sử dụng renderWithRouter để chuyển trạng trong unit test nến setup 1 QueryClientProvider riêng cho unitTest
+// để không làm ảnh hưởng tới QueryClientProvider trên dev
 export const renderWithRouter = ({ router = '/' } = {}) => {
   window.history.pushState({}, 'Test', router)
 
   return {
     user: userEvent.setup(),
-    ...render(<App />, { wrapper: BrowserRouter })
+    ...render(
+      <Provider>
+        <App />
+      </Provider>,
+      { wrapper: BrowserRouter }
+    )
   }
 }
